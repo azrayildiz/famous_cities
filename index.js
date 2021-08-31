@@ -1,44 +1,30 @@
-class City {
-    constructor(city, museum) {
-        this.city = city 
-        this.museum = museum 
-        this.photos = []
-        this.likes = []
-    }
+const Person = require("./person");
+const Photo = require("./photo");
 
-    definition(cities) {
-        console.log(`${cities.city} is one of the most famous cities in the world.`)
-    }
-
-    addPhoto(photo) {
-        this.photos.push(photo)
-    }
-
-    likePhoto(photo) {
-        this.likes.push(photo)
-        photo.likedBy.push(this)
-    }
-}
-
-class Photo {
-    constructor(filename) {
-        this.filename = filename
-        this.likedBy = []
-    }
-}
+const azra = new Person("azra", 43);
+const karen = new Person("karen", 48);
+const bedo = new Person("bedo", 17);
+const jonathan = new Person("jonathan", 75);
 
 
-const berlin = new City('Berlin', 'Pergamon Museum')
-const london = new City('London', 'British Museum')
-const istanbul = new City('Istanbul', 'Hagia Sophia')
-const madrid = new City('Madrid', 'Prado Museum')
-const newyork = new City('New York', 'Metropolitan Museum of Art')
+const berlinPhoto = new Photo("berlin.jpg");
+const munichPhoto = new Photo("munich.jpg");
 
-const photo = new Photo('berlin.jpg')
-berlin.addPhoto(photo)
-istanbul.likePhoto(photo)
-london.likePhoto(photo)
+jonathan.addPhoto(berlinPhoto); 
+jonathan.addPhoto(munichPhoto);
+
+jonathan.bio = 
+"An awesome guy who has seen it all, and now sharing them all with you.";
+
+karen.likePhoto(berlinPhoto);
+jonathan.addPhoto(berlinPhoto);
+azra.likePhoto(berlinPhoto);
+bedo.addPhoto(berlinPhoto);
 
 
-console.log(berlin.likes[0].likedBy[0].likes[0].filename == berlin.likes[0].filename, berlin.likes[0].filename == istanbul.photos[0].filename)
+//console.log(jonathan.profile); 
+
+
+
+console.log(jonathan.profile); 
 
