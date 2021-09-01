@@ -8,7 +8,7 @@ const jonathan = new Person("jonathan", 75);
 
 
 const berlinPhoto = new Photo("berlin.jpg");
-const munichPhoto = new Photo("munich.jpg");
+const munichPhoto = new Photo("koeln.jpg");
 
 jonathan.addPhoto(berlinPhoto); 
 jonathan.addPhoto(munichPhoto);
