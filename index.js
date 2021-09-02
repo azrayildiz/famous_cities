@@ -1,24 +1,20 @@
 const Person = require('./person')
 const Photo = require('./photo')
 
-const azra = new Person('azra', 43)
-const karen = new Person('karen', 48)
-const bedo = new Person('bedo', 17)
-const jonathan = new Person('jonathan', 75)
+const mihri = new Person('mihri', 35)
+const steve = new Person('steve', 21)
+const armagan = new Person('armagan', 36)
 
 const berlinPhoto = new Photo('berlin.jpg')
-const munichPhoto = new Photo('koeln.jpg')
+const munichPhoto = new Photo('munich.jpg')
 
-jonathan.addPhoto(berlinPhoto)
-jonathan.addPhoto(munichPhoto)
+steve.he = 3
+steve.addPhoto(berlinPhoto)
+steve.addPhoto(munichPhoto)
 
-jonathan.bio = 'An awesome guy who has seen it all, and now sharing them all with you.'
+steve.bio = 'An awesome hacker who has seen it all, and now sharing them all with you.'
 
-karen.likePhoto(berlinPhoto)
-jonathan.addPhoto(berlinPhoto)
-azra.likePhoto(berlinPhoto)
-bedo.addPhoto(berlinPhoto)
+armagan.likePhoto(berlinPhoto)
+mihri.likePhoto(berlinPhoto)
 
-// console.log(jonathan.profile);
-
-console.log(jonathan.profile)
+console.log(steve.profile)
