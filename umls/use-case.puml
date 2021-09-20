@@ -1,0 +1,27 @@
+@startuml
+
+left to right direction
+
+actor "A Famous Cities User" as user
+
+package "User Information" {
+  usecase "Name, Age, Email" as UC5
+}
+
+package "Attent to Event" {
+  usecase "Interest Event" as UC2
+  usecase "Comment Event" as UC4
+  usecase "Like Event" as UC1
+  usecase "Save Event" as UC3
+
+}
+
+user --> UC1
+user --> UC2
+user --> UC3
+user --> UC4
+user --> UC5
+
+
+
+@enduml

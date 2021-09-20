@@ -1,0 +1,9 @@
+@startuml
+
+[*] -> Events: Request
+Events --> EventInterests : interestedIn
+Events --> EventShares: share
+Events --> EventAttents: attents
+Events --> EventPayments: payed
+
+@enduml

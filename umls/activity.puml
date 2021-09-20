@@ -1,0 +1,56 @@
+@startuml
+title Activity Diagram of the Famous Cities
+
+start
+:Welcome;
+  if (Login?) then (yes)
+      #pink:Login;
+    else (no)
+      :Creat an Account;
+    endif
+:Discover Events;
+split
+    #pink:Open Live Tours;
+    #pink:Select Live Tour;
+    #pink:Attend Live Tour;
+
+  split again
+    :Open Live Talks;
+      :Select Live Talk;
+      split
+        #pink:Date of Events;
+        split again
+          #pink:Attent;
+        split again
+          #pink:Save;
+        split again
+          split
+            #pink:Payment;
+          split again
+            #pink:Cancel;
+          end split
+        end split
+        :Buy Ticket;
+  split again
+    #pink:Open Top Videos;
+    split
+      #pink:List of Videos;
+    split again
+      #pink:Select Video;
+    split again
+      #pink:Share Video;
+    end split
+  end
+  :return homepage;
+
+@enduml
+
+  this.tourName = tourName
+    this.eventDate = eventDate
+    this.location = location
+    this.price = price
+    this.likedBy = []
+    this.attended = [] // created
+    this.payments = []
+    this.cancelledBy = []
+    this.comments = []

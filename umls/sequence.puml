@@ -1,0 +1,26 @@
+@startuml
+
+actor User
+participant "Live Tours" as A
+participant "Live Talk" as B
+participant "Top Videos" as C
+participant "Save Events" as D
+participant "Attent Event" as E
+
+
+User --> A: Interest in Events
+activate A
+
+A --> B: Save a Live Talk
+activate C
+
+B --> C: Watched Videos
+C --> D: Saved Events
+D --> E: Attented Event
+
+deactivate A
+deactivate B
+deactivate C
+deactivate D
+deactivate E
+@enduml
