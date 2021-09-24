@@ -1,56 +1,120 @@
 // eslint-disable-next-line no-unused-vars
 const color = require('colors')
+const mongoose = require('mongoose')
+const autopopulate = require('mongoose-autopopulate')
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
+
+  phoneNumber: {
+    type: Number,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+
+  // password: String,
+
+  photos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Photo',
+      autopopulate: true,
+    },
+  ],
+
+  interestIn: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'TourEvent',
+    },
+  ],
+  commentOn: [],
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'TourEvent',
+    },
+  ],
+  saved: [],
+})
 
 class User {
-  constructor(name, age, phoneNumber, email) {
-    this.name = name
-    this.age = age
-    this.phoneNumber = phoneNumber
-    this.email = email
-    this.photos = []
-    this.interestIn = []
-    this.commentOn = []
-    this.likes = []
-    this.saved = []
-  }
+  async likePhoto(photo) {
+    this.likes.push(photo)
+    photo.likedBy.push(this)
 
+    await photo.save()
+    await this.save()
+  }
   // location check all files
-  attendTourEvent(tourevent) {
-    tourevent.attended.push(this.name.brightRed.bold) // added colors 07.09.2021
-    tourevent.payments.push(this.name) // use push //  tourevent.attended.push(this.name)
-    tourevent.cancelledBy.push(this.name) // tourevent.attended.push(this.name)
-  }
-
-  likeTourEvent(tourevent) {
+  async likeTourEvent(tourevent) {
     // like
-    this.likes.push(tourevent) // ??? problem??
-    tourevent.likedBy.push(this) // ? Problem???
-  }
+    tourevent.likes.push(this.name)
+    tourevent.likedBy.push(this)
 
-  saveTourEvent(tourevent) {
-    // save
-    // changed
-    tourevent.saved.push(this.name)
-    tourevent.interestedBy.push(this.name)
+    await tourevent.save()
+    await this.save()
   }
-  // ask speakers -  question array
-
-  commentTourEvent(tourevent, comment) {
+  async commentTourEvent(tourevent, comment) {
     // comment
 
     tourevent.comments.push(this) // tourEvent
+
+    await tourevent.save()
+  }
+  async attendTourEvent(tourevent) {
+    tourevent.attended.push(this.name.brightRed.bold)
+    tourevent.payments.push(this.name)
+    tourevent.cancelledBy.push(this.name)
+
+    await tourevent.save()
+    await this.save()
   }
 
-  payForTourEvent(tourevent, user, time) {
+  async saveTourEvent(tourevent) {
+    tourevent.saved.push(this.name)
+    tourevent.interestedBy.push(this.name)
+
+    await tourevent.save()
+    await this.save()
+  }
+  // ask speakers -  question array
+  async payForTourEvent(tourevent, user, time) {
     // pay simple name
     tourevent.payments.push({ user, time })
+
+    await tourevent.save()
+  }
+
+  async cancelTourEvent(tourevent, user, time) {
+    tourevent.cancelledBy.push({ user, time })
+
+    await tourevent.save()
   }
 
   // Talk Event
 
-  liveTalkEvent(livetalk) {
+  async liveTalkEvent(livetalk) {
     //
     livetalk.attendedBy.push(this)
+
+    await livetalk.save()
   }
 
   get profile() {
@@ -58,4 +122,7 @@ class User {
   }
 }
 
-module.exports = User
+userSchema.loadClass(User)
+userSchema.plugin(autopopulate)
+
+module.exports = mongoose.model('User', userSchema)

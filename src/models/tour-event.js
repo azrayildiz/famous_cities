@@ -1,32 +1,77 @@
+// const year = new Date()
+
+const mongoose = require('mongoose')
+const autopopulate = require('mongoose-autopopulate')
+
+const tourEventSchema = new mongoose.Schema({
+  tourName: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  eventDate: {
+    type: Number,
+  },
+  location: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
+  likedBy: [],
+  comments: [],
+  attends: [],
+  saved: [],
+  payments: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  cancelledBy: [
+    {
+      type: String,
+    },
+  ],
+})
+
+// --------------------------------
+
 class TourEvent {
-  constructor(tourName, eventDate, location, price) {
-    this.tourName = tourName
-    this.eventDate = eventDate
-    this.location = location
-    this.price = price
-    this.likedBy = []
-    this.attended = [] // created
-    this.payments = []
-    this.cancelledBy = []
-    this.comments = []
+  async addPhoto(photo) {
+    this.photo.push(photo)
+    await this.save()
   }
-
-  // Event class extend that class
-  // event.js extend from event.js to talkEvent speaker Array
-  // Guide name
-  // speaker
-
-  // for every event new eventDate???
-
-  // attendants  Method
-
-  get profile() {
-    return `${this.tourName} will take place in ${this.location} on (${this.eventDate})`
+  async addInfo(info) {
+    this.info = info
+    await this.save()
   }
+  async addDate(date) {
+    this.date.push(date)
 
-  set profile(newValue) {
-    throw new Error(`profile is only a getter.. you can't override it with ${newValue}`)
+    await this.save()
   }
+  // get profile() {
+  //   return `${this.tourName} will take place in ${this.location} on (${this.eventDate})`
+  // }
+  // set profile(newValue) {
+  //   throw new Error(`profile is only a getter.. you can't override it with ${newValue}`)
+  // }
 }
 
-module.exports = TourEvent
+tourEventSchema.loadClass(TourEvent)
+tourEventSchema.plugin(autopopulate)
+
+// --------------------------------
+
+// Event class extend that class
+// event.js extend from event.js to talkEvent speaker Array
+// Guide name
+// speaker
+
+// for every event new eventDate???
+
+// attendants  Method
+
+module.exports = mongoose.model('TourEvent', tourEventSchema)
