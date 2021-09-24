@@ -13,6 +13,24 @@ const { events } = require('../models/user')
 /* GET users listing. */
 router.get('/', async (req, res) => {
   const query = {}
+  if (req.query.name) {
+    query.name = req.query.name
+  }
+  if (req.query.age) {
+    query.age = req.query.age
+  }
+  res.send(await User.find(query))
+})
+
+/*POST create a user*/
+router.post('/', async (req, res) => {
+  const createdUser = await User.create(req.body)
+  res.send(createdUser)
+})
+
+/* GET users listing. */
+router.get('/initialize', async (req, res) => {
+  const query = {}
 
   if (req.query.name) {
     query.name = req.query.name
@@ -128,6 +146,13 @@ router.get('/initialize', async (req, res) => {
   // beatriz.commented(Rembrandt, 'The topic is very interesting. I am sure we will learn await things about Rembrandt.')
 
   // console.log(karen, karen.attendTourEvent[0].attendedBy)
+  router.post('/:userId/adds', async (req, res) => {
+    const user = await User.findById(req.params.userId)
+    const photo = await Photo.findById(req.body.photoId)
+
+    await user.addPhoto(photo)
+    res.sendStatus(200)
+  })
 
   console.log(jasemin)
   res.sendStatus(200)
