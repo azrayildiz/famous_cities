@@ -1,0 +1,60 @@
+{
+  "name": "famous_cities",
+  "version": "1.0.0",
+  "description": "This an app project for online tours and talks.",
+  "main": "bin/www",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/www",
+    "lint": "lint-staged",
+    "prepare": "husky install",
+    "lint-all": "pretty-quick && eslint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "pretty-quick --staged",
+      "eslint --fix"
+    ],
+    "*.+(json|css|md)": [
+      "pretty-quick --staged"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azrayildiz/famous_cities.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "mongoose": "^6.0.5",
+    "mongoose-autopopulate": "^0.15.0",
+    "morgan": "~1.9.1",
+    "pug": "2.0.0-beta11"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/azrayildiz/famous_cities/issues"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.25.1",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.3.2"
+  }
+}
