@@ -10,17 +10,18 @@ const photoSchema = new mongoose.Schema({
       autopopulate: true,
     },
   ],
-  comments: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        autopopulate: true,
-      },
-      comment: String,
-    },
-  ],
 })
+//   comments: [
+//     {
+//       user: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'User',
+//         autopopulate: true,
+//       },
+//       comment: String,
+//     },
+//   ],
+// })
 
 photoSchema.plugin(autopopulate)
 

@@ -5,19 +5,21 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
 require('./database-connection')
+
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
+const photosRouter = require('./routes/photos')
 
 const app = express()
 
-// if (app.get('env') == 'development') {
-//   /* eslint-disable-next-line */
-//   app.use(require('connect-livereload')())
-//   /* eslint-disable-next-line */
-//   require('livereload')
-//     .createServer({ extraExts: ['pug'] })
-//     .watch([`${__dirname}/public`, `${__dirname}/views`])
-// }
+if (app.get('env') == 'development') {
+  /* eslint-disable-next-line */
+  app.use(require('connect-livereload')())
+  /* eslint-disable-next-line */
+  require('livereload')
+    .createServer({ extraExts: ['pug'] })
+    .watch([`${__dirname}/public`, `${__dirname}/views`])
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -29,8 +31,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/api/', indexRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/photos', photosRouter)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

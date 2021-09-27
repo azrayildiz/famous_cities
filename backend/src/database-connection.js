@@ -16,16 +16,5 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-
   .then(() => console.log('connection established'))
   .catch(console.log)
-
-// const Panda = mongoose.model('Panda', { name: String, age: Number })
-
-// async function main() {
-//   const pandas = await Panda.find({ age: { $lte: 18, $lte: 21 }, name: 'haluk' })
-//   console.log(pandas)
-// }
-
-// const panda = new Panda({ name: 'elif', age: 27 })
-// panda.save().then(() => console.log(`we have a new panda, ${panda.name}!`))
