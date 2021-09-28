@@ -39,7 +39,7 @@
     "mongoose": "^6.0.5",
     "mongoose-autopopulate": "^0.15.0",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "pug": "^3.0.2"
   },
   "keywords": [],
   "bugs": {
