@@ -1,10 +1,10 @@
-const request = require('supertest')
 const app = require('../src/app')
+const request = require('supertest')
 
 describe('Users endpoints', () => {
   it('post request to /users should create a user', async () => {
     const userToCreate = {
-      name: 'TestName' + Date.now(),
+      name: 'SomeName' + Date.now(),
       age: 27,
       bio: 'Been There. Done That.',
     }

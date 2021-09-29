@@ -9,4 +9,8 @@ router.get('/bootstrap', (req, res) => {
   res.render('bootstrap', { title: 'bootstrap' })
 })
 
+router.get('/bootstrap', (req, res) => {
+  res.render('bootstrap', { title: 'bootstrap' })
+})
+
 module.exports = router
