@@ -39,55 +39,75 @@ router.get('/initialize', async (req, res) => {
 })
 
 router.get('/initialize', async (req, res) => {
-  const jonathan = await User.create({
+  const jonathan = new User({
     name: 'Jonathan',
     age: 75,
     phoneNumber: 157984340,
     email: 'jonathan@gmail.com',
     location: 'Berlin',
   })
-  const beatriz = await User.create({
+  await jonathan.setPassword('test')
+  await jonathan.save()
+
+  const beatriz = new User({
     name: 'Beatriz',
     age: 37,
     phoneNumber: 982490823,
     email: 'beatriz@hotmail.com',
     location: 'Spain',
   })
-  const alex = await User.create({
+  await beatriz.setPassword('test')
+  await beatriz.save()
+
+  const alex = new User({
     name: 'Alex',
     age: 48,
     phoneNumber: 4395284756,
     email: 'alex@hotmail.com',
     location: 'England',
   })
-  const jasemin = await User.create({
+  await alex.setPassword('test')
+  await alex.save()
+
+  const jasemin = new User({
     name: 'Jasemin',
     age: 23,
     phoneNumber: 8745284734,
     email: 'jasemin@gmail.com',
     location: 'Holland',
   })
-  const karen = await User.create({
+  await jasemin.setPassword('test')
+  await jasemin.save()
+
+  const karen = new User({
     name: 'Karen',
     age: 48,
     phoneNumber: 3975284756,
     email: 'karen@gmail.com',
     location: 'Israel',
   })
-  const hermann = await User.create({
+  await karen.setPassword('test')
+  await karen.save()
+
+  const hermann = new User({
     name: 'Hermann',
     age: 54,
     phoneNumber: 2075284756,
     email: 'hermann@gmail.com',
     location: 'Germany',
   })
-  const wendy = await User.create({
+  await hermann.setPassword('test')
+  await hermann.save()
+
+  const wendy = new User({
     name: 'Wendy',
     age: 22,
     phoneNumber: 12975284756,
     email: 'nadine@gmail.com',
     location: 'USA',
   })
+  await wendy.setPassword('test')
+  await wendy.save()
   // tourevent
 
   const Cervantes = await TourEvent.create({
