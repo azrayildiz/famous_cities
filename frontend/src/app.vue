@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios'
 import { mapActions } from 'vuex'
 
 export default {
@@ -10,11 +11,15 @@ export default {
       this.$router.push('/login')
     },
   },
+  async created() {
+    console.log((await axios.get('/api/account/session')).data)
+  },
 }
 </script>
 <template lang="pug">
   #app
     #nav
+      router-link(to="/") User List
       router-link(to="/profile") Profile
       router-link(to="/login") Login
       router-link(to="/register") Register
