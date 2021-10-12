@@ -4,7 +4,7 @@ export default {
   props: ['user'],
   data() {
     return {
-      defaultBio: 'This user has no bios.',
+      defaultBio: 'This user will participate in the event.',
     }
   },
 }
@@ -28,7 +28,7 @@ export default {
 .box {
   padding: 2rem;
   border: 1px solid #333;
-  background: #dd0;
+  background: rgb(206, 189, 153);
   border-radius: 0.3rem;
 }
 </style>
