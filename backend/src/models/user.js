@@ -12,18 +12,16 @@ const userSchema = new mongoose.Schema({
   },
   age: {
     type: Number,
-    required: true,
   },
 
   phoneNumber: {
     type: Number,
-    required: true,
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+  // email: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  // },
   location: {
     type: String,
     required: true,

@@ -1,6 +1,7 @@
 const express = require('express')
 
 const router = express.Router()
+const axios = require('axios')
 
 const colors = require('colors')
 
@@ -24,19 +25,28 @@ router.get('/', async (req, res) => {
 
 /*POST create a user*/
 router.post('/', async (req, res) => {
-  const createdUser = await User.create(req.body)
+  const userToCreate = {
+    name: req.body.name,
+    age: req.body.age,
+  }
+
+  const createdUser = await User.create(userToCreate)
   res.send(createdUser)
 })
 
-/* GET users listing. */
-router.get('/initialize', async (req, res) => {
-  const query = {}
+async function createPhoto(filename) {
+  const photo = await Photo.create({ filename })
 
-  if (req.query.name) {
-    query.name = req.query.name
-  }
-  res.send(await User.find(query))
-})
+  const picsumUrl = `https://picsum.photos/seed/${phjoto._id}/300/300`
+  const pictureRequest = await axios.get(picsumUrl)
+  photo.filename = pictureRequest.request.path
+
+  const imagePath = await downloadImage(picsumUrl, filename)
+  const description = await describeImage(imagePath)
+  photo.description = description.BestOutcome.description
+
+  return photo.save()
+}
 
 router.get('/initialize', async (req, res) => {
   const jonathan = new User({
@@ -166,26 +176,36 @@ router.get('/initialize', async (req, res) => {
   // beatriz.commented(Rembrandt, 'The topic is very interesting. I am sure we will learn await things about Rembrandt.')
 
   // console.log(karen, karen.attendTourEvent[0].attendedBy)
-  router.post('/:userId/adds', async (req, res) => {
-    const user = await User.findById(req.params.userId)
-    const photo = await Photo.findById(req.body.photoId)
-
-    await user.addPhoto(photo)
-    res.sendStatus(200)
-  })
-
   console.log(jasemin)
   res.sendStatus(200)
+})
 
-  router.get('/:userId', async (req, res) => {
-    const user = await User.findById(req.params.userId)
+router.post('/:userId/adds', async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  const photo = await Photo.findById(req.body.photoId)
 
-    if (user) {
-      res.render('user', { user })
-    } else {
-      res.sendStatus(404)
-    }
-  })
+  await user.addPhoto(photo)
+  res.sendStatus(200)
+})
+
+router.post('/:userId/likes', async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  const photo = await Photo.findById(req.body.photoId)
+
+  await user.likePhoto(photo)
+  res.sendStatus(200)
+})
+
+router.get('/:userId', async (req, res) => {
+  const user = await User.findById(req.params.userId)
+
+  if (user) res.send(user)
+  else res.sendStatus(404)
+})
+
+router.get('/:userId/json', async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  res.send(user)
 })
 
 module.exports = router

@@ -14,6 +14,7 @@ const talkEventSchema = new mongoose.Schema({
   },
   location: {
     type: String,
+    required: true,
   },
   price: {
     type: Number,

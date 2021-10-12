@@ -8,10 +8,10 @@ router.get('/session', (req, res) => {
 })
 
 router.post('/', async (req, res, next) => {
-  const { name, age, email, password } = req.body
+  const { name, age, email, password, phoneNumber, location } = req.body
 
   try {
-    const user = await User.register({ name, age, email }, password)
+    const user = await User.register({ name, age, email, phoneNumber, location }, password)
     res.send(user)
   } catch (e) {
     next(e)

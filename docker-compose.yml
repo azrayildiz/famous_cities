@@ -6,11 +6,11 @@ services:
       context: frontend
       dockerfile: Dockerfile
     labels:
-      - 'traafik.enable=true'
+      - 'traefik.enable=true'
       - 'traefik.http.routers.frontend.rule=Host(`famous_cities.localhost`)'
       - 'traefik.http.routers.frontend.entrypoints=web'
     ports:
-      - 8080
+      - 5000:8080
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
@@ -25,25 +25,26 @@ services:
       # - MONGODB_DATABASE
       - MONGODB_CONNECTION_STRING=mongodb://mongo/famous_cities
     labels:
-      - 'traafik.enable=true'
+      - 'traefik.enable=true'
       - 'traefik.http.routers.backend.rule=(Host(`famous_cities.localhost`) && PathPrefix(`/api`))'
       - 'traefik.http.routers.backend.entrypoints=web'
-
     ports:
       - 3000
       - 35729:35729
     volumes:
       - ./backend/src:/app/src
+      - ./images:/app/images
   mongo:
     image: mongo
     ports:
       - 27017:27017
   load-balancer:
-    image: traefik:v2.2
+    image: traefik:v2.5.3
     command:
       - '--api.insecure=true'
       - '--providers.docker=true'
       - '--providers.docker.exposedbydefault=false'
+      - '--providers.docker.endpoint=unix:///var/run/docker.sock'
       - '--entrypoints.web.address=:80'
     ports:
       - '80:80'
