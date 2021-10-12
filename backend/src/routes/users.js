@@ -1,6 +1,7 @@
 const express = require('express')
 
 const router = express.Router()
+const axios = require('axios')
 
 const colors = require('colors')
 
@@ -24,70 +25,99 @@ router.get('/', async (req, res) => {
 
 /*POST create a user*/
 router.post('/', async (req, res) => {
-  const createdUser = await User.create(req.body)
+  const userToCreate = {
+    name: req.body.name,
+    age: req.body.age,
+  }
+
+  const createdUser = await User.create(userToCreate)
   res.send(createdUser)
 })
 
-/* GET users listing. */
-router.get('/initialize', async (req, res) => {
-  const query = {}
+async function createPhoto(filename) {
+  const photo = await Photo.create({ filename })
 
-  if (req.query.name) {
-    query.name = req.query.name
-  }
-  res.send(await User.find(query))
-})
+  const picsumUrl = `https://picsum.photos/seed/${phjoto._id}/300/300`
+  const pictureRequest = await axios.get(picsumUrl)
+  photo.filename = pictureRequest.request.path
+
+  const imagePath = await downloadImage(picsumUrl, filename)
+  const description = await describeImage(imagePath)
+  photo.description = description.BestOutcome.description
+
+  return photo.save()
+}
 
 router.get('/initialize', async (req, res) => {
-  const jonathan = await User.create({
+  const jonathan = new User({
     name: 'Jonathan',
     age: 75,
     phoneNumber: 157984340,
     email: 'jonathan@gmail.com',
     location: 'Berlin',
   })
-  const beatriz = await User.create({
+  await jonathan.setPassword('test')
+  await jonathan.save()
+
+  const beatriz = new User({
     name: 'Beatriz',
     age: 37,
     phoneNumber: 982490823,
     email: 'beatriz@hotmail.com',
     location: 'Spain',
   })
-  const alex = await User.create({
+  await beatriz.setPassword('test')
+  await beatriz.save()
+
+  const alex = new User({
     name: 'Alex',
     age: 48,
     phoneNumber: 4395284756,
     email: 'alex@hotmail.com',
     location: 'England',
   })
-  const jasemin = await User.create({
+  await alex.setPassword('test')
+  await alex.save()
+
+  const jasemin = new User({
     name: 'Jasemin',
     age: 23,
     phoneNumber: 8745284734,
     email: 'jasemin@gmail.com',
     location: 'Holland',
   })
-  const karen = await User.create({
+  await jasemin.setPassword('test')
+  await jasemin.save()
+
+  const karen = new User({
     name: 'Karen',
     age: 48,
     phoneNumber: 3975284756,
     email: 'karen@gmail.com',
     location: 'Israel',
   })
-  const hermann = await User.create({
+  await karen.setPassword('test')
+  await karen.save()
+
+  const hermann = new User({
     name: 'Hermann',
     age: 54,
     phoneNumber: 2075284756,
     email: 'hermann@gmail.com',
     location: 'Germany',
   })
-  const wendy = await User.create({
+  await hermann.setPassword('test')
+  await hermann.save()
+
+  const wendy = new User({
     name: 'Wendy',
     age: 22,
     phoneNumber: 12975284756,
     email: 'nadine@gmail.com',
     location: 'USA',
   })
+  await wendy.setPassword('test')
+  await wendy.save()
   // tourevent
 
   const Cervantes = await TourEvent.create({
@@ -146,26 +176,36 @@ router.get('/initialize', async (req, res) => {
   // beatriz.commented(Rembrandt, 'The topic is very interesting. I am sure we will learn await things about Rembrandt.')
 
   // console.log(karen, karen.attendTourEvent[0].attendedBy)
-  router.post('/:userId/adds', async (req, res) => {
-    const user = await User.findById(req.params.userId)
-    const photo = await Photo.findById(req.body.photoId)
-
-    await user.addPhoto(photo)
-    res.sendStatus(200)
-  })
-
   console.log(jasemin)
   res.sendStatus(200)
+})
 
-  router.get('/:userId', async (req, res) => {
-    const user = await User.findById(req.params.userId)
+router.post('/:userId/adds', async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  const photo = await Photo.findById(req.body.photoId)
 
-    if (user) {
-      res.render('user', { user })
-    } else {
-      res.sendStatus(404)
-    }
-  })
+  await user.addPhoto(photo)
+  res.sendStatus(200)
+})
+
+router.post('/:userId/likes', async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  const photo = await Photo.findById(req.body.photoId)
+
+  await user.likePhoto(photo)
+  res.sendStatus(200)
+})
+
+router.get('/:userId', async (req, res) => {
+  const user = await User.findById(req.params.userId)
+
+  if (user) res.send(user)
+  else res.sendStatus(404)
+})
+
+router.get('/:userId/json', async (req, res) => {
+  const user = await User.findById(req.params.userId)
+  res.send(user)
 })
 
 module.exports = router

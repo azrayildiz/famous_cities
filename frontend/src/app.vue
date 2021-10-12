@@ -1,9 +1,29 @@
+<script>
+import axios from 'axios'
+import { mapActions } from 'vuex'
+
+export default {
+  name: 'App',
+  methods: {
+    ...mapActions(['logout']),
+    async doLogout() {
+      await this.logout()
+      this.$router.push('/login')
+    },
+  },
+  async created() {
+    console.log((await axios.get('/api/account/session')).data)
+  },
+}
+</script>
 <template lang="pug">
   #app
-    h1 Famous Cities
     #nav
-      router-link(to="/") Home |&npbsp;
-      router-link(to="/about") About
+      router-link(to="/") User List
+      router-link(to="/profile") Profile
+      router-link(to="/login") Login
+      router-link(to="/register") Register
+      a(@click="doLogout" href="#") Logout
     router-view
 </template>
 
@@ -21,6 +41,7 @@
   a {
     font-weight: bold;
     color: #2c3e50;
+    margin: 0 1rem;
 
     &.router-link-exact-active {
       color: #42b983;
