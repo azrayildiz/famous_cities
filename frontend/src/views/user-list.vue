@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios'
 import Counter from '@/components/counter.vue'
 import { mapActions } from 'vuex'
 
@@ -14,8 +13,6 @@ export default {
   },
   async created() {
     this.users = await this.fetchUsers()
-    const usersRequest = await axios.get('/api/users')
-    this.users = usersRequest.data
   },
   methods: {
     ...mapActions(['fetchUsers']),
@@ -29,6 +26,6 @@ export default {
     p The time is: {{ time }}
     h2 Users
     div(v-for="user in users" :user="user")
-      router-link(:to="`/users/${user._id}`") user.name
+      router-link(:to="`/users/${user._id}`") {{ user.name }}
     Counter
 </template>
