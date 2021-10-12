@@ -9,7 +9,8 @@ export default {
       age: null,
       email: '',
       password: '',
-
+      phoneNumber: null,
+      location: '',
       backendError: null,
     }
   },
@@ -24,6 +25,8 @@ export default {
           age: this.age,
           email: this.email,
           password: this.password,
+          phoneNumber: this.phoneNumber,
+          location: this.location,
         })
 
         this.$router.push('/login')
@@ -47,6 +50,10 @@ export default {
         input(v-model="email" id="email" type="email" placeholder="Your email" required)
       label(for="password") Password:&nbsp;
         input(v-model="password" id="password" type="password" placeholder="Your password" required)
+      label(for="phoneNumber") Phone Number:&nbsp;
+        input(v-model="phoneNumber" id="phoneNumber" type="phoneNumber" placeholder="Your Phone Number" required)
+      label(for="location") Location:&nbsp;
+        input(v-model="location" id="location" type="location" placeholder="Your City" required)
       input(type="submit" value="Register")
     div(v-if="backendError") {{ backendError }}
     div Already have an account? <router-link to="/login">Log in</router-link>
