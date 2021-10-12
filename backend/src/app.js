@@ -4,8 +4,10 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
+const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
+const cors = require('cors')
+
 const mongoose = require('mongoose')
 const User = require('./models/user')
 
@@ -18,6 +20,13 @@ const accountRouter = require('./routes/account')
 
 const app = express()
 
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+)
+
 if (app.get('env') == 'development') {
   /* eslint-disable-next-line */
   app.use(require('connect-livereload')())
@@ -26,6 +35,8 @@ if (app.get('env') == 'development') {
     .createServer({ extraExts: ['pug'] })
     .watch([`${__dirname}/public`, `${__dirname}/views`])
 }
+
+app.set('trust proxy', 1)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -36,27 +47,18 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
-
-const clientPromise = new Promise((resolve, reject) => {
-  resolve(mongooseConnection.getClient())
-
-  reject(new Error('MongoClient Error'))
-})
-
 app.use(
   session({
     secret: ['thisisnotasupersecuresecretsecret', 'thisisanothernotasupersecuresecretsecret'],
-
-    store: MongoStore.create({
-      clientPromise,
+    store: new MongoStore({
+      mongooseConnection,
       stringify: false,
     }),
-
     cookie: {
       maxAge: 30 * 24 * 60 * 60 * 1000,
-
       path: '/api',
+      sameSite: 'none',
+      secure: true,
     },
   })
 )
@@ -64,7 +66,6 @@ app.use(
 // Configure passport middleware
 
 app.use(passport.initialize())
-
 app.use(passport.session())
 
 passport.use(User.createStrategy())
