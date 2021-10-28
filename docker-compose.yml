@@ -26,13 +26,14 @@ services:
       - MONGODB_CONNECTION_STRING=mongodb://mongo/famous_cities
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.backend.rule=(Host(`famous_cities.localhost`) && PathPrefix(`/api`))'
+      - 'traefik.http.routers.backend.rule=(Host(`famous_cities.localhost`) && (PathPrefix(`/api`) || PathPrefix(`/socket`)))'
       - 'traefik.http.routers.backend.entrypoints=web'
     ports:
       - 3000
       - 35729:35729
     volumes:
       - ./backend/src:/app/src
+      - ./backend/test:/app/test
       - ./images:/app/images
   mongo:
     image: mongo
@@ -44,7 +45,6 @@ services:
       - '--api.insecure=true'
       - '--providers.docker=true'
       - '--providers.docker.exposedbydefault=false'
-      - '--providers.docker.endpoint=unix:///var/run/docker.sock'
       - '--entrypoints.web.address=:80'
     ports:
       - '80:80'

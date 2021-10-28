@@ -12,10 +12,10 @@ const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 const { errors } = require('celebrate')
 
-const mongoose = require('mongoose')
 const User = require('./models/user')
 
 const mongooseConnection = require('./database-connection')
+const socketService = require('./socket-service')
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
@@ -43,6 +43,8 @@ if (app.get('env') == 'development') {
 
 app.set('trust proxy', 1)
 
+app.set('io', socketService)
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
@@ -50,6 +52,9 @@ app.set('view engine', 'pug')
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+
+app.use(mongoSanitize({ replaceWith: '_' }))
+
 app.use(cookieParser())
 
 app.use(
@@ -62,8 +67,8 @@ app.use(
     cookie: {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       path: '/api',
-      sameSite: 'none',
-      secure: true,
+      sameSite: process.env.NODE_ENV == 'production' ? 'none' : 'strict',
+      secure: process.env.NODE_ENV == 'production',
     },
   })
 )
@@ -91,6 +96,8 @@ app.use('/api/', indexRouter)
 app.use('/api/account', accountRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/photos', photosRouter)
+
+app.use(errors())
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
