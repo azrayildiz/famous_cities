@@ -3,41 +3,67 @@ const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 
-const colors = require('colors')
+const describeImage = require('../lib/image-description')
+const downloadImage = require('../lib/download-image')
+
+const { celebrate, Joi, errors, Segments } = require('celebrate')
 
 const User = require('../models/user')
 const TourEvent = require('../models/tour-event')
 const TalkEvent = require('../models/talk-event')
 const Photo = require('../models/photo')
-const { events } = require('../models/user')
+// const { path } = require('../app')
+// const { events } = require('../models/user')
 
 /* GET users listing. */
-router.get('/', async (req, res) => {
-  const query = {}
-  if (req.query.name) {
-    query.name = req.query.name
+router.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: {
+      name: Joi.string(),
+      age: Joi.number(),
+    },
+  }),
+  async (req, res) => {
+    const query = {}
+
+    if (req.query.name) {
+      query.name = req.query.name
+    }
+
+    if (req.query.age) {
+      query.age = req.query.age
+    }
+    res.send(await User.find(query))
   }
-  if (req.query.age) {
-    query.age = req.query.age
-  }
-  res.send(await User.find(query))
-})
+)
 
 /*POST create a user*/
-router.post('/', async (req, res) => {
-  const userToCreate = {
-    name: req.body.name,
-    age: req.body.age,
-  }
+router.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      age: Joi.number().required(),
+      email: Joi.string().email().required(),
+    },
+  }),
+  async (req, res) => {
+    const userToCreate = {
+      name: req.body.name,
+      age: req.body.age,
+      email: req.body.email,
+    }
 
-  const createdUser = await User.create(userToCreate)
-  res.send(createdUser)
-})
+    const createdUser = await User.create(userToCreate)
+    res.send(createdUser)
+  }
+)
 
 async function createPhoto(filename) {
   const photo = await Photo.create({ filename })
 
-  const picsumUrl = `https://picsum.photos/seed/${phjoto._id}/300/300`
+  const picsumUrl = `https://picsum.photos/seed/${photo._id}/300/300`
   const pictureRequest = await axios.get(picsumUrl)
   photo.filename = pictureRequest.request.path
 
@@ -135,6 +161,7 @@ router.get('/initialize', async (req, res) => {
     date: '18 September 2021',
     time: '19:00pm',
     duration: '60 minutes',
+    location: 'Madrid',
   })
 
   const Rembrandt = await TalkEvent.create({
@@ -143,12 +170,13 @@ router.get('/initialize', async (req, res) => {
     date: '14 October 2021',
     time: '19:00pm',
     duration: '60 minutes',
+    location: 'Berlin',
   })
 
-  //photos
-  const madridPhoto = await Photo.create({ filename: 'madrid.jpg' })
-  const maryEdwardPhoto = await Photo.create({ filename: 'maryedward.jpg' })
-  const rembrandtPhoto = await Photo.create({ filename: 'rembrandt.jpg' })
+  //Photos
+  const madridPhoto = await createPhoto('madrid.jpg')
+  const maryEdwardPhoto = await createPhoto('maryedward.jpg')
+  const rembrandtPhoto = await createPhoto('rembrandt.jpg')
 
   await jasemin.likePhoto(madridPhoto)
   await wendy.likePhoto(rembrandtPhoto)
@@ -175,7 +203,7 @@ router.get('/initialize', async (req, res) => {
   // jonathan.commented(Rembrandt, 'I will attend this talk. I am looking forward to the event!')
   // beatriz.commented(Rembrandt, 'The topic is very interesting. I am sure we will learn await things about Rembrandt.')
 
-  // console.log(karen, karen.attendTourEvent[0].attendedBy)
+  // console.log(karen, karen.attendTourEvent[0].attendees)
   console.log(jasemin)
   res.sendStatus(200)
 })
