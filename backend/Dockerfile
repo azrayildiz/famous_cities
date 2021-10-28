@@ -6,8 +6,7 @@ WORKDIR /app
 
 ADD package.json package-lock.json ./
 
-RUN npm install --production  --ignore-scripts
-
+RUN npm install --production
 
 ADD bin ./bin
 ADD src ./src
