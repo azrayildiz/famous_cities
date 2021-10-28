@@ -6,7 +6,11 @@ const logger = require('morgan')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
+
 const cors = require('cors')
+const helmet = require('helmet')
+const mongoSanitize = require('express-mongo-sanitize')
+const { errors } = require('celebrate')
 
 const mongoose = require('mongoose')
 const User = require('./models/user')
@@ -19,6 +23,7 @@ const photosRouter = require('./routes/photos')
 const accountRouter = require('./routes/account')
 
 const app = express()
+app.use(helmet())
 
 app.use(
   cors({
