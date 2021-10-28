@@ -1,7 +1,9 @@
 const express = require('express')
-const User = require('../models/user')
-const router = express.Router()
 const passport = require('passport')
+
+const User = require('../models/user')
+
+const router = express.Router()
 
 router.get('/session', (req, res) => {
   res.send(req.user)
