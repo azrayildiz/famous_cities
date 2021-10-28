@@ -11,7 +11,6 @@ router.post('/', async (req, res) => {
   }
 
   const createdPhoto = await Photo.create(photoToCreate)
-
   res.send(createdPhoto)
 })
 
