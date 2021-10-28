@@ -21,11 +21,11 @@ const tourEventSchema = new mongoose.Schema({
   },
   likedBy: [],
   comments: [],
-  attends: [],
+  attendees: [],
   saved: [],
   payments: [
     {
-      type: String,
+      type: Object,
       required: true,
     },
   ],

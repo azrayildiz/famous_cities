@@ -64,7 +64,7 @@ class User {
   // location check all files
   async likeTourEvent(tourevent) {
     // like
-    tourevent.likes.push(this.name)
+    this.likes.push(tourevent.name)
     tourevent.likedBy.push(this)
 
     await tourevent.save()
@@ -78,7 +78,7 @@ class User {
     await tourevent.save()
   }
   async attendTourEvent(tourevent) {
-    tourevent.attended.push(this.name.brightRed.bold)
+    tourevent.attendees.push(this.name.brightRed.bold)
     tourevent.payments.push(this.name)
     tourevent.cancelledBy.push(this.name)
 
@@ -111,7 +111,7 @@ class User {
 
   async liveTalkEvent(livetalk) {
     //
-    livetalk.attendedBy.push(this)
+    livetalk.attendees.push(this)
 
     await livetalk.save()
   }
