@@ -1,5 +1,4 @@
 <script>
-import axios from 'axios'
 import { mapActions } from 'vuex'
 
 export default {
@@ -10,9 +9,6 @@ export default {
       await this.logout()
       this.$router.push('/login')
     },
-  },
-  async created() {
-    console.log((await axios.get('/api/account/session')).data)
   },
 }
 </script>
